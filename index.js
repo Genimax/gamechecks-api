@@ -41,7 +41,7 @@ const gameSearch = async (req, res) => {
       "Client-ID": process.env.CLIENTID,
       Authorization: `Bearer ${process.env.TOKEN}`,
     },
-    body: `where (name ~ *"${gameName}"*); fields name; limit 10;`,
+    body: `where name ~ *"${gameName}"* & cover != null & parent_game = null & version_parent = null & category = 0; fields name; limit 10;`,
   })
     .then((response) => response.json())
     .then((response) => {
@@ -49,4 +49,25 @@ const gameSearch = async (req, res) => {
     });
 };
 
-app.get("/gamerequest", gameSearch);
+const gamePage = async (req, res) => {
+  await tokenUpdater();
+
+  const gameID = req.query.id;
+
+  const DBURL = "https://api.igdb.com/v4/games";
+
+  await fetch(DBURL, {
+    method: "post",
+    headers: {
+      "Client-ID": process.env.CLIENTID,
+      Authorization: `Bearer ${process.env.TOKEN}`,
+    },
+    body: `fields name,total_rating,cover.url,first_release_date,involved_companies.company.name,screenshots,summary,websites.category, websites.url, websites.trusted; where id = ${gameID};`,
+  })
+    .then((response) => response.json())
+    .then((response) => {
+      res.send(response);
+    });
+};
+
+app.get("/gamerequest", gameSearch).get("/gamepagerequest", gamePage);
