@@ -41,7 +41,7 @@ const gameSearch = async (req, res) => {
       "Client-ID": process.env.CLIENTID,
       Authorization: `Bearer ${process.env.TOKEN}`,
     },
-    body: `where name ~ *"${gameName}"* & cover != null & parent_game = null & version_parent = null & category = 0; fields name; limit 10;`,
+    body: `where name ~ *"${gameName}"* & rating!= null & cover != null & parent_game = null & version_parent = null & category = 0; sort rating desc; fields name; limit 10;`,
   })
     .then((response) => response.json())
     .then((response) => {
@@ -62,7 +62,7 @@ const gamePage = async (req, res) => {
       "Client-ID": process.env.CLIENTID,
       Authorization: `Bearer ${process.env.TOKEN}`,
     },
-    body: `fields name,total_rating,cover.url,first_release_date,involved_companies.company.name,screenshots,summary,websites.category, websites.url, websites.trusted; where id = ${gameID};`,
+    body: `fields name,total_rating,cover.url,first_release_date,involved_companies.company.name,screenshots.image_id, screenshots.url, summary,websites.category, websites.url, websites.trusted; where id = ${gameID};`,
   })
     .then((response) => response.json())
     .then((response) => {
