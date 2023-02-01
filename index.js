@@ -2,6 +2,7 @@ const PORT = process.env.PORT || 8000;
 const express = require("express");
 const cors = require("cors");
 const e = require("express");
+const { json } = require("express");
 require("dotenv").config();
 
 const app = express();
@@ -141,7 +142,32 @@ const getTwitchStreams = async (req, res) => {
   }
 };
 
+const getSteamReview = async (req, res) => {
+  try {
+    const steamID = req.query.steamID;
+
+    const fetchOptions = (reviewType) => {
+      const steamURL = `https://store.steampowered.com/appreviews/${steamID}?json=1&num_per_page=1&language=english&review_type=${reviewType}`;
+
+      return steamURL;
+    };
+
+    const positiveReview = await fetch(fetchOptions("positive")).then(
+      (responce) => responce.json()
+    );
+
+    const negativeReview = await fetch(fetchOptions("negative")).then(
+      (responce) => responce.json()
+    );
+
+    res.status(200).send([positiveReview, negativeReview]);
+  } catch (e) {
+    console.log(e);
+  }
+};
+
 app
   .get("/gamerequest", gameSearch)
   .get("/gamepagerequest", gamePage)
-  .get("/twitchstreams", getTwitchStreams);
+  .get("/twitchstreams", getTwitchStreams)
+  .get("/steamreviews", getSteamReview);
