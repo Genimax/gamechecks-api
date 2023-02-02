@@ -1,3 +1,5 @@
+import fetch from "node-fetch";
+
 const getSteamReview = async (req, res) => {
   try {
     const steamID = req.query.steamID;

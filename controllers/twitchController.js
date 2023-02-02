@@ -1,4 +1,5 @@
 const { authorizationData } = require("../functions/setHeaders");
+import fetch from "node-fetch";
 
 const getTwitchStreams = async (req, res) => {
   const mainURL = "https://api.twitch.tv/helix";

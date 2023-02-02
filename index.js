@@ -1,7 +1,6 @@
 const PORT = process.env.PORT || 8000;
 const express = require("express");
 const cors = require("cors");
-const e = require("express");
 require("dotenv").config();
 
 const { authorizationData } = require("./middleware/authChecker");
