@@ -1,5 +1,3 @@
-import fetch from "node-fetch";
-
 const authorizationData = async (req, res, next) => {
   try {
     // CHECK IF TOKEN IS EXPIRED

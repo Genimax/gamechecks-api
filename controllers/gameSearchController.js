@@ -1,5 +1,4 @@
 const { authorizationData } = require("../functions/setHeaders");
-import fetch from "node-fetch";
 
 const gameSearch = async (req, res) => {
   try {
